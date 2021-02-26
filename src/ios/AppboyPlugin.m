@@ -17,14 +17,12 @@
 #endif
 
 #import "AppDelegate+Appboy.h"
-#import "IDFADelegate.h"
 
 @interface AppboyPlugin()
   @property NSString *APIKey;
   @property NSString *disableAutomaticPushRegistration;
   @property NSString *disableAutomaticPushHandling;
   @property NSString *apiEndpoint;
-  @property NSString *enableIDFACollection;
   @property NSString *enableLocationCollection;
   @property NSString *enableGeofences;
   @property NSString *disableUNAuthorizationOptionProvisional;
@@ -38,7 +36,6 @@
   self.disableAutomaticPushRegistration = settings[@"com.appboy.ios_disable_automatic_push_registration"];
   self.disableAutomaticPushHandling = settings[@"com.appboy.ios_disable_automatic_push_handling"];
   self.apiEndpoint = settings[@"com.appboy.ios_api_endpoint"];
-  self.enableIDFACollection = settings[@"com.appboy.ios_enable_idfa_automatic_collection"];
   self.enableLocationCollection = settings[@"com.appboy.enable_location_collection"];
   self.enableGeofences = settings[@"com.appboy.geofences_enabled"];
   self.disableUNAuthorizationOptionProvisional = settings[@"com.appboy.ios_disable_un_authorization_option_provisional"];
@@ -59,13 +56,6 @@
   // Add the endpoint only if it's non nil
   if (self.apiEndpoint != nil) {
     appboyLaunchOptions[ABKEndpointKey] = self.apiEndpoint;
-  }
-
-  // Set the IDFA delegate for the plugin
-  if ([self.enableIDFACollection isEqualToString:@"YES"]) {
-    NSLog(@"IDFA collection enabled. Using plugin IDFA delegate.");
-    IDFADelegate *idfaDelegate = [[IDFADelegate alloc] init];
-    appboyLaunchOptions[ABKIDFADelegateKey] = idfaDelegate;
   }
 
   [Appboy startWithApiKey:self.APIKey

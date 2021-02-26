@@ -69,8 +69,6 @@
     <source-file src="src/ios/AppboyPlugin.m" />
     <header-file src="src/ios/AppDelegate+Appboy.h" />
     <source-file src="src/ios/AppDelegate+Appboy.m" />
-    <header-file src="src/ios/IDFADelegate.h" />
-    <source-file src="src/ios/IDFADelegate.m" />
 
     <!-- Editing the plist for the location permission prompt -->
     <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
