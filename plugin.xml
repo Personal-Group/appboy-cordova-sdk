@@ -45,6 +45,9 @@
 
   <!-- ios -->
   <platform name="ios">
+    <!-- Temp solution to build issue in OutSystems MABS 7 (Cocoapods issue). Remove in future update -->
+    <hook type="before_plugin_install" src="hooks/iOSBeforeInstall.js" />
+
     <framework src="Appboy-iOS-SDK" type="podspec" spec="~> 4.0.2" />
 
     <!-- frameworks -->
