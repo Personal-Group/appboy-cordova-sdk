@@ -82,6 +82,9 @@ public class AppboyPlugin extends CordovaPlugin {
   private Context mApplicationContext;
   private Map<String, IEventSubscriber<FeedUpdatedEvent>> mFeedSubscriberMap = new ConcurrentHashMap<>();
 
+  private CallbackContext locationPermissionCallbackContext;
+  private CallbackContext geofenceCallbackContext;
+
   @Override
   protected void pluginInitialize() {
     mApplicationContext = this.cordova.getActivity().getApplicationContext();
@@ -103,9 +106,14 @@ public class AppboyPlugin extends CordovaPlugin {
       case LOCATION_REQUEST_CODE:
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
           Log.i(TAG, "Fine location permission granted.");
-          AppboyLocationService.requestInitialization(mApplicationContext);
+          if (locationPermissionCallbackContext != null) {
+            locationPermissionCallbackContext.success("Location permission granted.");
+          }
         } else {
           Log.i(TAG, "Fine location permission NOT granted.");
+          if (locationPermissionCallbackContext != null) {
+            locationPermissionCallbackContext.error("Location permission not granted.");          
+          }
         }
         break;
       default:
@@ -170,6 +178,16 @@ public class AppboyPlugin extends CordovaPlugin {
       case "getDeviceId":
         callbackContext.success(Appboy.getInstance(mApplicationContext).getDeviceId());
         return true;
+      case "requestLocationPermission":
+        requestLocationPermission(callbackContext);
+        return true;
+      case "initializeLocationService":
+        geofenceCallbackContext = callbackContext;
+        initializeGeofences();
+        return true;
+      case "getLocationPermissionStatus":
+        getLocationPermission(callbackContext);
+        return false;
     }
 
     // Appboy User methods
@@ -575,22 +593,74 @@ public class AppboyPlugin extends CordovaPlugin {
     String fineLocationPermission = "android.permission.ACCESS_FINE_LOCATION";
     if (Build.VERSION.SDK_INT >= 29) {
       String accessBackgroundPermission = "android.permission.ACCESS_FINE_LOCATION";
+
+      if (cordova.hasPermission(fineLocationPermission) && cordova.hasPermission(accessBackgroundPermission)) {
+        AppboyLocationService.requestInitialization(mApplicationContext);
+        if (geofenceCallbackContext != null) {
+          geofenceCallbackContext.success();
+        }
+      } else {
+        if (geofenceCallbackContext != null) {
+          geofenceCallbackContext.error("Can't start location service — location permission not granted.");
+        }
+      }
+    } else {
+      if (cordova.hasPermission(fineLocationPermission)) {
+        AppboyLocationService.requestInitialization(mApplicationContext);
+        if (geofenceCallbackContext != null) {
+          geofenceCallbackContext.success();
+        }
+      } else {
+        if (geofenceCallbackContext != null) {
+          geofenceCallbackContext.error("Can't start location service — location permission not granted.");
+        }
+      }
+    }
+    
+    geofenceCallbackContext = null;
+  }
+  
+  private void requestLocationPermission(final CallbackContext callbackContext) {
+    String fineLocationPermission = "android.permission.ACCESS_FINE_LOCATION";
+    if (Build.VERSION.SDK_INT >= 29) {
+      String accessBackgroundPermission = "android.permission.ACCESS_FINE_LOCATION";
       // Get location permissions, if we need them
       if (cordova.hasPermission(fineLocationPermission) && cordova.hasPermission(accessBackgroundPermission)) {
         AppboyLocationService.requestInitialization(mApplicationContext);
+        callbackContext.success("Location permission already granted. Started location service.");
       } else {
         // Request the permission
+        locationPermissionCallbackContext = callbackContext;
         cordova.requestPermissions(this, LOCATION_REQUEST_CODE, new String[]{fineLocationPermission, accessBackgroundPermission});
       }
     } else {
       // Get location permissions, if we need them
       if (cordova.hasPermission(fineLocationPermission)) {
         AppboyLocationService.requestInitialization(mApplicationContext);
+        callbackContext.success("Location permission already granted. Started location service.");
       } else {
         // Request the permission
+        locationPermissionCallbackContext = callbackContext;
         cordova.requestPermission(this, LOCATION_REQUEST_CODE, fineLocationPermission);
       }
-    }
+    }  
+  }
+  
+  private void getLocationPermission(final CallbackContext callbackContext) {
+    String fineLocationPermission = "android.permission.ACCESS_FINE_LOCATION";
+    if (Build.VERSION.SDK_INT >= 29) {
+      String accessBackgroundPermission = "android.permission.ACCESS_FINE_LOCATION";
+      if (cordova.hasPermission(fineLocationPermission) && cordova.hasPermission(accessBackgroundPermission)) {
+        callbackContext.success("Authorized");
+        return;
+      }
+    } else {
+      if (cordova.hasPermission(fineLocationPermission)) {
+        callbackContext.success("Authorized");
+        return;
+      }
+    }  
+    callbackContext.success("Denied");
   }
 
   private static EnumSet<CardCategory> getCategoriesFromJSONArray(JSONArray jsonArray) throws JSONException {

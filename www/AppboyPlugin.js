@@ -49,8 +49,32 @@ AppboyPlugin.prototype.changeUser = function (userId) {
 *
 * @param {string} registrationId - The registration ID, or for apps integrating Baidu Cloud Push, the Baidu user id.
 */
+
 AppboyPlugin.prototype.registerAppboyPushMessages = function (gcmRegistrationID) {
 	cordova.exec(null, null, "AppboyPlugin", "registerAppboyPushMessages", [gcmRegistrationID]);
+}
+
+/**
+* Prompts the user for location permission
+*/
+AppboyPlugin.prototype.requestLocationPermission = function (successCallback, errorCallback) {
+	cordova.exec(successCallback, errorCallback, "AppboyPlugin", "requestLocationPermission", []);
+}
+
+/**
+* Gets the location permission status as a string the user for location permission
+*/
+AppboyPlugin.prototype.getLocationPermissionStatus = function (successCallback, errorCallback) {
+	cordova.exec(successCallback, errorCallback, "AppboyPlugin", "getLocationPermissionStatus", []);
+}
+
+/**
+* ** ANDROID ONLY**
+*
+* Starts the location service for geofence/location tracking
+*/
+AppboyPlugin.prototype.initializeLocationService = function (successCallback, errorCallback) {
+	cordova.exec(successCallback, errorCallback, "AppboyPlugin", "initializeLocationService", []);
 }
 
 /**
