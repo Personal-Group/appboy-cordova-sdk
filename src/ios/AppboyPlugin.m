@@ -72,6 +72,7 @@
             inApplication:notification.object
         withLaunchOptions:notification.userInfo
         withAppboyOptions:appboyLaunchOptions];
+  [[Appboy sharedInstance] addSdkMetadata:@[ABKSdkMetadataCordova]];
 
   if (![self.disableAutomaticPushRegistration isEqualToString:@"YES"]) {
     UIUserNotificationType notificationSettingTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIUserNotificationTypeSound);
@@ -136,7 +137,7 @@
 }
 
 - (void)requestImmediateDataFlush:(CDVInvokedUrlCommand *)command {
-  [[Appboy sharedInstance] flushDataAndProcessRequestQueue];
+  [[Appboy sharedInstance] requestImmediateDataFlush];
 }
 
 /*-------ABKUser.h-------*/
@@ -157,10 +158,18 @@
 
 - (void) setGender:(CDVInvokedUrlCommand *)command{
   NSString *gender = [command argumentAtIndex:0 withDefault:nil];
-  if ([gender.lowercaseString isEqualToString:@"m"]) {
-    [[Appboy sharedInstance].user setGender:ABKUserGenderMale];
-  } else if ([gender.lowercaseString isEqualToString:@"f"]) {
+  if ([gender.lowercaseString isEqualToString:@"f"]) {
     [[Appboy sharedInstance].user setGender:ABKUserGenderFemale];
+  } else if ([gender.lowercaseString isEqualToString:@"m"]) {
+    [[Appboy sharedInstance].user setGender:ABKUserGenderMale];
+  } else if ([gender.lowercaseString isEqualToString:@"n"]) {
+    [[Appboy sharedInstance].user setGender:ABKUserGenderNotApplicable];
+  } else if ([gender.lowercaseString isEqualToString:@"o"]) {
+    [[Appboy sharedInstance].user setGender:ABKUserGenderOther];
+  } else if ([gender.lowercaseString isEqualToString:@"p"]) {
+    [[Appboy sharedInstance].user setGender:ABKUserGenderPreferNotToSay];
+  } else if ([gender.lowercaseString isEqualToString:@"u"]) {
+    [[Appboy sharedInstance].user setGender:ABKUserGenderUnknown];
   }
 }
 
@@ -321,6 +330,20 @@
   NSString *language = [command argumentAtIndex:0 withDefault:nil];
   if (language != nil) {
     [Appboy sharedInstance].user.language = language;
+  }
+}
+
+- (void) addToSubscriptionGroup:(CDVInvokedUrlCommand *)command {
+  NSString *groupId = [command argumentAtIndex:0 withDefault:nil];
+  if (groupId != nil) {
+    [[Appboy sharedInstance].user addToSubscriptionGroupWithGroupId:groupId];
+  }
+}
+
+- (void) removeFromSubscriptionGroup:(CDVInvokedUrlCommand *)command {
+  NSString *groupId = [command argumentAtIndex:0 withDefault:nil];
+  if (groupId != nil) {
+    [[Appboy sharedInstance].user removeFromSubscriptionGroupWithGroupId:groupId];
   }
 }
 
