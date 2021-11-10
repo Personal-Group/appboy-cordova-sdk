@@ -1,7 +1,7 @@
 var AppboyPlugin = function () {
 }
 
-// Appboy methods
+// Braze methods
 /**
  * When a user first uses Appboy on a device they are considered "anonymous". Use this method to identify a user
  *    with a unique ID, which enables the following:
@@ -440,10 +440,31 @@ AppboyPlugin.prototype.setLanguage = function (language) {
 }
 
 /**
+ * Adds user to given subscription group.
+ */
+AppboyPlugin.prototype.addToSubscriptionGroup = function (groupId) {
+	cordova.exec(null, null, "AppboyPlugin", "addToSubscriptionGroup", [groupId]);
+}
+
+/**
+ * Removes user from given subscription group.
+ */
+AppboyPlugin.prototype.removeFromSubscriptionGroup = function (groupId) {
+	cordova.exec(null, null, "AppboyPlugin", "removeFromSubscriptionGroup", [groupId]);
+}
+
+/**
  * @return An app specific ID that is stored on the device.
  */
 AppboyPlugin.prototype.getDeviceId = function (successCallback, errorCallback) {
 	cordova.exec(successCallback, errorCallback, "AppboyPlugin", "getDeviceId");
+}
+
+/**
+ * @return Starts SDK session tracking if previously disabled. Only used for Android.
+ */
+AppboyPlugin.prototype.startSessionTracking = function () {
+	cordova.exec(null, null, "AppboyPlugin", "startSessionTracking");
 }
 
 AppboyPlugin.prototype['NotificationSubscriptionTypes'] = {
@@ -453,8 +474,12 @@ AppboyPlugin.prototype['NotificationSubscriptionTypes'] = {
 };
 
 AppboyPlugin.prototype['Genders'] = {
+  "FEMALE": 'f',
   "MALE": 'm',
-  "FEMALE": 'f'
+  "NOT_APPLICABLE": 'n',
+  "OTHER": 'o',
+  "PREFER_NOT_TO_SAY": 'p',
+  "UNKNOWN": 'u'
 };
 
 AppboyPlugin.prototype['CardCategories'] = {
