@@ -1,3 +1,57 @@
+## 2.27.0
+
+##### Breaking
+- Updated to [Braze Android SDK 17.0.0](https://github.com/Appboy/appboy-android-sdk/releases/tag/v17.0.0).
+- Updated to [Braze iOS SDK 4.4.0](https://github.com/Appboy/appboy-ios-sdk/releases/tag/4.4.0).
+
+##### Added
+- Added `addToSubscriptionGroup()` and `removeFromSubscriptionGroup()`.
+
+## 2.26.0
+
+##### Breaking
+- Updated to [Braze Android SDK 16.0.0](https://github.com/Appboy/appboy-android-sdk/releases/tag/v16.0.0).
+
+##### Fixed
+- Fixed an issue in pre Android P WebViews where the system WebView would not properly handle view focus being returned to it.
+  - https://issuetracker.google.com/issues/36915710 for more information.
+  - This fix is applied by default and can be disabled via `com.braze.android_apply_cordova_webview_focus_request_fix` in your `config.xml`.
+  - When enabled, this fix sets a custom In App Message view vrapper factory with the native Android SDK, potentially overriding any other custom set view factories.
+
+## 2.25.0
+
+##### Breaking
+- Updated to [Braze Android SDK 15.0.0](https://github.com/Appboy/appboy-android-sdk/releases/tag/v15.0.0).
+
+##### Changed
+- Updated to [Braze iOS SDK 4.3.2](https://github.com/Appboy/appboy-ios-sdk/releases/tag/4.3.2).
+
+##### Added
+- Added `Other`, `Unknown`, `Not Applicable`, and `Prefer not to Say` options for user gender.
+
+## 2.24.0
+
+##### Breaking
+- Updated to [Braze Android SDK 14.0.1](https://github.com/Appboy/appboy-android-sdk/releases/tag/v14.0.1).
+- Updated to [Braze iOS SDK 4.3.0](https://github.com/Appboy/appboy-ios-sdk/releases/tag/4.3.0).
+
+##### Changed
+- (minor) Changed logcat tag for Android plugin to be `BrazeCordova`.
+
+## 2.23.0
+
+##### Breaking
+- Updated to [Braze Android SDK 13.1.2](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.2).
+  
+## 2.22.0
+
+##### Breaking
+- Updated to [Braze Android SDK 13.0.0](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.0.0).
+
+##### Added
+- Added the ability to delay automatic session tracking for Android.
+  - `<preference name="com.appboy.android_disable_auto_session_tracking" value="true" />` in your `config.xml`.
+
 ## 2.21.0
 
 ##### Breaking
