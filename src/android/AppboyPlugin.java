@@ -634,7 +634,8 @@ public class AppboyPlugin extends CordovaPlugin {
       String accessBackgroundPermission = "android.permission.ACCESS_BACKGROUND_LOCATION";
 
       if (cordova.hasPermission(fineLocationPermission) && cordova.hasPermission(accessBackgroundPermission)) {
-        AppboyLocationService.requestInitialization(mApplicationContext);
+        Braze.getInstance(mApplicationContext).requestLocationInitialization();
+
         if (geofenceCallbackContext != null) {
           geofenceCallbackContext.success();
         }
@@ -645,7 +646,8 @@ public class AppboyPlugin extends CordovaPlugin {
       }
     } else {
       if (cordova.hasPermission(fineLocationPermission)) {
-        AppboyLocationService.requestInitialization(mApplicationContext);
+        Braze.getInstance(mApplicationContext).requestLocationInitialization();
+
         if (geofenceCallbackContext != null) {
           geofenceCallbackContext.success();
         }
