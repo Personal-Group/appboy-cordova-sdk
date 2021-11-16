@@ -630,7 +630,7 @@ public class AppboyPlugin extends CordovaPlugin {
 
   private void initializeGeofences() {
     String fineLocationPermission = "android.permission.ACCESS_FINE_LOCATION";
-    if (Build.VERSION.SDK_INT >= 29) {
+    if (Build.VERSION.SDK_INT == 29) { // For Android 11+ (API level 30+) we need to direct the user to settings to enable background permission. It's automatically granted pre API level 29.
       String accessBackgroundPermission = "android.permission.ACCESS_BACKGROUND_LOCATION";
 
       if (cordova.hasPermission(fineLocationPermission) && cordova.hasPermission(accessBackgroundPermission)) {
@@ -663,7 +663,7 @@ public class AppboyPlugin extends CordovaPlugin {
   
   private void requestLocationPermission(final CallbackContext callbackContext) {
     String fineLocationPermission = "android.permission.ACCESS_FINE_LOCATION";
-    if (Build.VERSION.SDK_INT >= 29) {
+    if (Build.VERSION.SDK_INT == 29) { // For Android 11+ (API level 30+) we need to direct the user to settings to enable background permission. It's automatically granted pre API level 29.
       String accessBackgroundPermission = "android.permission.ACCESS_BACKGROUND_LOCATION";
       // Get location permissions, if we need them
       if (cordova.hasPermission(fineLocationPermission) && cordova.hasPermission(accessBackgroundPermission)) {
