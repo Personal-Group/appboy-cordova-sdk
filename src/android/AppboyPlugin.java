@@ -282,9 +282,7 @@ public class AppboyPlugin extends CordovaPlugin {
         case "setPhoneNumber":
           currentUser.setPhoneNumber(args.getString(0));
           return true;
-        case "setAvatarImageUrl":
-          currentUser.setAvatarImageUrl(args.getString(0));
-          return true;
+
         case "setPushNotificationSubscriptionType": {
           String subscriptionType = args.getString(0);
           switch (subscriptionType) {
@@ -616,7 +614,7 @@ public class AppboyPlugin extends CordovaPlugin {
         desiredCard.logClick();
         break;
       case LOG_CONTENT_CARDS_DISMISSED_METHOD:
-        desiredCard.setIsDismissed(true);
+        desiredCard.setDismissed(true);
         break;
       case LOG_CONTENT_CARDS_IMPRESSION_METHOD:
         desiredCard.logImpression();
