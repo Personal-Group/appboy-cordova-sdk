@@ -1,3 +1,80 @@
+## 4.0.0
+
+##### Breaking
+- Renamed instances of `Appboy` to `Braze`.
+  - To ensure that your project is properly migrated to the new naming conventions, note and replace the following instances in your project:
+    - The plugin has been renamed from `cordova-plugin-appboy` to `cordova-plugin-braze`. 
+      - Ensure that you run `cordova plugin remove cordova-plugin-appboy` and then re-add the plugin using the instructions in the [README](./README.md).
+    - This GitHub repository has been moved to the URL `https://github.com/braze-inc/braze-cordova-sdk`.
+    - In your project's `config.xml` file, rename instances of `com.appboy` to `com.braze` for each of your configuration property keys.
+    - The JavaScript class interface `AppboyPlugin` has been renamed to `BrazePlugin`.
+- Updated to [Braze Android SDK 25.0.0](https://github.com/braze-inc/braze-android-sdk/blob/master/CHANGELOG.md#2500).
+- Updated to [Braze Swift SDK 5.13.0](https://github.com/braze-inc/braze-swift-sdk/releases/tag/5.13.0).
+  - This update fixes the iOS behavior introduced in version `2.33.0` when logging clicks for content cards. Calling `logContentCardClicked` now only sends a click event for metrics, instead of both sending a click event as well as redirecting to the associated `url` field.
+    - For instance, to log a content card click and redirect to a URL, you will need two commands:
+    ```
+    BrazePlugin.logContentCardClicked(contentCardId);
+
+    // Your own custom implementation
+    YourApp.openUrl(contentCard["url"]);
+    ```
+    - This brings the iOS behavior to match pre-`2.33.0` versions and bring parity with Android's behavior.
+
+##### Added
+- Added property methods for Feature Flags: `getFeatureFlagBooleanProperty(id, key)`, `getFeatureFlagStringProperty(id, key)`, `getFeatureFlagNumberProperty(id, key)`
+
+## 3.0.0
+
+##### Added
+- Added support for the upcoming Braze Feature Flags product with `getFeatureFlag()`, `getAllFeatureFlags()`, `refreshFeatureFlags()`, and `subscribeToFeatureFlagUpdates()`.
+
+##### Changed
+- Updated to [Braze Swift SDK 5.11.0](https://github.com/braze-inc/braze-swift-sdk/releases/tag/5.11.0).
+- Removed automatic requests for App Tracking Transparency permissions on iOS.
+
+## 2.33.0
+
+##### Breaking
+- Migrated the iOS plugin to use the new [Braze Swift SDK](https://github.com/braze-inc/braze-swift-sdk) (5.8.1).
+  - News Feed UI is no longer supported on iOS.
+
+## 2.32.0
+
+##### Breaking
+- Updated to [Braze Android SDK 24.1.0](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.1.0).
+- Updated the Android bridge to Kotlin.
+  - `<preference name="GradlePluginKotlinEnabled" value="true" />` is now required in your `config.xml`.
+- Removed `setAvatarImageUrl()`.
+
+##### Changed
+- Added an `main` value to `package.json`.
+
+##### Added
+- Added `setRegisteredPushToken()` which replaces the deprecated `registerAppboyPushMessages()` method.
+
+## 2.31.0
+
+##### Breaking
+- Updated to [Braze Android SDK 23.0.1](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.0.1).
+
+##### Added
+- Added a method `requestPushPermission()` for Android API 33 to request push permission prompts from the system on Android 13 devices.
+
+## 2.30.1
+
+##### Added
+- Added the ability to set the session timeout for iOS (String) in seconds.
+  - Add `<preference name="com.appboy.com.appboy.ios_session_timeout" value="your_timeout" />` to your `config.xml`, replacing `your_timeout` with the desired number of seconds.
+
+##### Fixed
+- Fixed a bug where a Content Card without a key-value pair could cause a crash.
+
+## 2.30.0
+
+##### Breaking
+- Updated to [Braze Android SDK 21.0.0](https://github.com/Appboy/appboy-android-sdk/releases/tag/v21.0.0).
+- Removed "logContentCardsDisplayed" from the javascript plugin.
+
 ## 2.29.0
 
 ##### Breaking
